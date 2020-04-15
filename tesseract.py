@@ -67,7 +67,7 @@ cv2.waitKey(0)
 
 # Adding custom options
 custom_config = r'--oem 3 --psm 3'
-text=pytesseract.image_to_string(image, config=custom_config)
+text=pytesseract.image_to_string(image, lang="ron", config=custom_config)
 print (text)
 
 #export ocr result
