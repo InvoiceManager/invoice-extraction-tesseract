@@ -1,57 +1,70 @@
 import cv2
 import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import csv
-from PIL import Image
-import pytesseract
-
-#read your file
-file=r'result/crop.jpg'
-img = cv2.imread(file,0)
-img.shape#thresholding the image to a binary image
-thresh,img_bin = cv2.threshold(img,128,255,cv2.THRESH_BINARY |cv2.THRESH_OTSU)#inverting the image
-img_bin = 255-img_bin
-cv2.imwrite('result/jpgcv_inverted.png',img_bin)#Plotting the image to see the output
-plotting = plt.imshow(img_bin,cmap='gray')
-plt.show()
-
-# Length(width) of kernel as 100th of total width
-kernel_len = np.array(img).shape[1]//100# Defining a vertical kernel to detect all vertical lines of image
-ver_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1, kernel_len))# Defining a horizontal kernel to detect all horizontal lines of image
-hor_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (kernel_len, 1))# A kernel of 2x2
-kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2))
-
-#Use vertical kernel to detect and save the vertical lines in a jpg
-image_1 = cv2.erode(img_bin, ver_kernel, iterations=3)
-vertical_lines = cv2.dilate(image_1, ver_kernel, iterations=3)
-plotting = plt.imshow(image_1,cmap='gray')
-plt.show()
-
-#Use horizontal kernel to detect and save the horizontal lines in a jpg
-image_2 = cv2.erode(img_bin, hor_kernel, iterations=3)
-horizontal_lines = cv2.dilate(image_2, hor_kernel, iterations=3)
-plotting = plt.imshow(image_2,cmap='gray')
-plt.show()
-
-# Combine horizontal and vertical lines in a new third image, with both having same weight.
-img_vh = cv2.addWeighted(vertical_lines, 0.5, horizontal_lines, 0.5, 0.0)#Eroding and thesholding the image
-img_vh = cv2.erode(~img_vh, kernel, iterations=2)
-thresh, img_vh = cv2.threshold(img_vh,128,255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
-bitxor = cv2.bitwise_xor(img,img_vh)
-bitnot = cv2.bitwise_not(bitxor)#Plotting the generated image
-plotting = plt.imshow(bitnot,cmap='gray')
-plt.show()
 
 
-# Combine horizontal and vertical lines in a new third image, with both having same weight.
-img_vh = cv2.addWeighted(vertical_lines, 0.5, horizontal_lines, 0.5, 0.0)#Eroding and thesholding the image
-img_vh = cv2.erode(~img_vh, kernel, iterations=2)
-thresh, img_vh = cv2.threshold(img_vh,128,255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
-bitxor = cv2.bitwise_xor(img,img_vh)
-bitnot = cv2.bitwise_not(bitxor)#Plotting the generated image
-plotting = plt.imshow(bitnot,cmap='gray')
-plt.show()
+def sort_contours(cnts, method="left-to-right"):
+    # initialize the reverse flag and sort index
+    reverse = False
+    i = 0
+    # handle if we need to sort in reverse
+    if method == "right-to-left" or method == "bottom-to-top":
+        reverse = True
+    # handle if we are sorting against the y-coordinate rather than
+    # the x-coordinate of the bounding box
+    if method == "top-to-bottom" or method == "bottom-to-top":
+        i = 1
+    # construct the list of bounding boxes and sort them from top to
+    # bottom
+    boundingBoxes = [cv2.boundingRect(c) for c in cnts]
+    (cnts, boundingBoxes) = zip(*sorted(zip(cnts, boundingBoxes),
+                                        key=lambda b: b[1][i], reverse=reverse))
+    # return the list of sorted contours and bounding boxes
+    return (cnts, boundingBoxes)
 
-# Detect contours for following box detection
-contours, hierarchy = cv2.findContours(img_vh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+def extractCells(fileName):
+
+    # Read the image
+    img = cv2.imread(fileName, 0)
+
+    # Thresholding the image
+    (thresh, img_bin) = cv2.threshold(img, 128, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)  # Invert the image
+    img_bin = 255 - img_bin
+
+    # Defining a kernel length
+    kernel_length = np.array(img).shape[1] // 80
+
+    # A verticle kernel of (1 X kernel_length), which will detect all the verticle lines from the image.
+    verticle_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1,
+                                                                 kernel_length))  # A horizontal kernel of (kernel_length X 1), which will help to detect all the horizontal line from the image.
+    hori_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (kernel_length, 1))  # A kernel of (3 X 3) ones.
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
+
+    # Morphological operation to detect vertical lines from an image
+    img_temp1 = cv2.erode(img_bin, verticle_kernel, iterations=3)
+    verticle_lines_img = cv2.dilate(img_temp1, verticle_kernel, iterations=3)
+
+    img_temp2 = cv2.erode(img_bin, hori_kernel, iterations=3)
+    horizontal_lines_img = cv2.dilate(img_temp2, hori_kernel, iterations=3)
+
+    # Weighting parameters, this will decide the quantity of an image to be added to make a new image.
+    alpha = 0.5
+    beta = 1.0 - alpha  # This function helps to add two image with specific weight parameter to get a third image as summation of two image.
+    img_final_bin = cv2.addWeighted(verticle_lines_img, alpha, horizontal_lines_img, beta, 0.0)
+    img_final_bin = cv2.erode(~img_final_bin, kernel, iterations=2)
+    (thresh, img_final_bin) = cv2.threshold(img_final_bin, 128, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
+    cv2.imwrite("result/img_final_bin.jpg", img_final_bin)
+
+    # Find contours for image, which will detect all the boxes
+    contours, hierarchy = cv2.findContours(img_final_bin, cv2.RETR_TREE,
+                                                cv2.CHAIN_APPROX_SIMPLE)  # Sort all the contours by top to bottom.
+    (contours, boundingBoxes) = sort_contours(contours, method="top-to-bottom")
+
+    idx = 0
+    for c in contours:
+        # Returns the location and width,height for every contour
+        x, y, w, h = cv2.boundingRect(c)
+
+        idx += 1
+        new_img = img[y:y+h, x:x+w]
+        cv2.imwrite('result/'+str(idx) + '.png', new_img)# If the box height is greater then 20, widht is >80, then only save it as a box in "cropped/" folder.
