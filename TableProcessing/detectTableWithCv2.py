@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from TableProcessing.cellExtraction import extractCells
 
-file = r'C:\Faculty\Master1\Invoice\invoice-extraction-tesseract\src\tabel.png'
+file = r'C:\Faculty\Master1\Invoice\invoice-extraction-tesseract\src\fact.jpg'
 
 im1 = cv2.imread(file, 0)
 im = cv2.imread(file)
@@ -33,4 +33,4 @@ for cnt in contours:
 cv2.namedWindow('detecttable2', cv2.WINDOW_NORMAL)
 cv2.imwrite('result/detecttable2.jpg', im)
 
-#extractCells('result/crop.jpg')
+extractCells('result/crop.jpg')

@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from TextRecognition import tesseract
 
 
 def sort_contours(cnts, method="left-to-right"):
@@ -66,5 +67,6 @@ def extractCells(fileName):
         x, y, w, h = cv2.boundingRect(c)
 
         idx += 1
-        new_img = img[y:y+h, x:x+w]
+        new_img = img[y-2:y+h+2, x-2:x+w]
         cv2.imwrite('result/'+str(idx) + '.png', new_img)# If the box height is greater then 20, widht is >80, then only save it as a box in "cropped/" folder.
+        tesseract.text_recognize('result/'+str(idx) + '.png')
