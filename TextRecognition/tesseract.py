@@ -72,10 +72,11 @@ def text_recognize(text_to_recognize):
     # Adding custom options
     custom_config = r'--oem 3 --psm 3'
     text=pytesseract.image_to_string(image, lang="ron", config=custom_config)
-    print (text)
 
     #export ocr result
     workbook = xlsxwriter.Workbook('output.xlsx')
     worksheet = workbook.add_worksheet()
     worksheet.write('A1', text)
     workbook.close()
+
+    return text

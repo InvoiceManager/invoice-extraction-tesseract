@@ -33,4 +33,7 @@ for cnt in contours:
 cv2.namedWindow('detecttable2', cv2.WINDOW_NORMAL)
 cv2.imwrite('result/detecttable2.jpg', im)
 
-extractCells('result/crop.jpg')
+
+myCells = extractCells('result/crop.jpg')
+#TODO
+print(myCells.print_dict())

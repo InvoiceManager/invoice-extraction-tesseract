@@ -1,7 +1,9 @@
 import cv2
 import numpy as np
-from TextRecognition import tesseract
 
+from TableProcessing import header
+from TextRecognition import tesseract
+from TableProcessing import cells
 
 def sort_contours(cnts, method="left-to-right"):
     # initialize the reverse flag and sort index
@@ -23,10 +25,13 @@ def sort_contours(cnts, method="left-to-right"):
     return (cnts, boundingBoxes)
 
 
-def extractCells(fileName):
+def extractCells(file_name):
+    # init header
+    myHeader = header.Header()
+    myCells = cells.Cells()
 
     # Read the image
-    img = cv2.imread(fileName, 0)
+    img = cv2.imread(file_name, 0)
 
     # Thresholding the image
     (thresh, img_bin) = cv2.threshold(img, 128, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)  # Invert the image
@@ -50,7 +55,7 @@ def extractCells(fileName):
 
     # Weighting parameters, this will decide the quantity of an image to be added to make a new image.
     alpha = 0.5
-    beta = 1.0 - alpha  # This function helps to add two image with specific weight parameter to get a third image as summation of two image.
+    beta = 1.0 - alpha
     img_final_bin = cv2.addWeighted(verticle_lines_img, alpha, horizontal_lines_img, beta, 0.0)
     img_final_bin = cv2.erode(~img_final_bin, kernel, iterations=2)
     (thresh, img_final_bin) = cv2.threshold(img_final_bin, 128, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
@@ -58,15 +63,41 @@ def extractCells(fileName):
 
     # Find contours for image, which will detect all the boxes
     contours, hierarchy = cv2.findContours(img_final_bin, cv2.RETR_TREE,
-                                                cv2.CHAIN_APPROX_SIMPLE)  # Sort all the contours by top to bottom.
+                                           cv2.CHAIN_APPROX_SIMPLE)  # Sort all the contours by top to bottom.
     (contours, boundingBoxes) = sort_contours(contours, method="top-to-bottom")
 
+    aux_header_x = -1
+    aux_line_x = -1
+    lines = []
+    flag_to_header = False
     idx = 0
     for c in contours:
         # Returns the location and width,height for every contour
         x, y, w, h = cv2.boundingRect(c)
+        if aux_header_x == x:
+            aux_line_x = x
+            flag_to_header = True
+            if flag_to_header:
+                aux_header_x = -2
+                myHeader.sort_list()
+                #TODO return header with body in one call
+                myHeader.print_props()
+
+        if aux_header_x == -1:
+            aux_header_x = x
 
         idx += 1
-        new_img = img[y-2:y+h+2, x-2:x+w]
-        cv2.imwrite('result/'+str(idx) + '.png', new_img)# If the box height is greater then 20, widht is >80, then only save it as a box in "cropped/" folder.
-        tesseract.text_recognize('result/'+str(idx) + '.png')
+        new_img = img[y - 2:y + h + 2, x - 2:x + w]
+        # If the box height is greater then 20, widht is >80, then only save it as a box in "cropped/" folder.
+        cv2.imwrite('result/' + str(idx) + '.png', new_img)
+
+        extracted_text = tesseract.text_recognize('result/' + str(idx) + '.png')
+        if flag_to_header == False:
+            myHeader.add_proprieties(extracted_text)
+        if flag_to_header:
+            if aux_line_x == x:
+                myCells.add_cell(idx, lines)
+                lines = []
+            lines.append(extracted_text)
+
+    return myCells
