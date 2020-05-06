@@ -460,3 +460,45 @@ CIF: RO12345678
 Reg.com.: J35/2001/2001
 Adresa: Adresa Bd. Republicii nr. 2, Timisoara,
 Timis, 300302
+2invoice
+make your invoRes onine
+Demo 2invoice
+CIF: RO17991374
+Reg.com.: J05/2013/2005
+Adresa: Str. Alexandru Donici nr. 18, Oradea,
+Bihor, 410562
+Telefon: 0726104530
+E-mail: contactZinvoice.ro
+Cont: RO47BTRL00501202725814XX
+Banca Transilvania
+Cota TVA: 19%
+Plata TVA Ia incasare
+FACTURA
+Seria: F Nr: 096 | Data: 13.06.2017
+Client:
+Client Demo
+CIF: RO12345678
+Reg.com.: J35/2001/2001
+Adresa: Adresa Bd. Republicii nr. 2, Timisoara,
+Timis, 300302
+2invoice
+make your invoRes onine
+Demo 2invoice
+CIF: RO17991374
+Reg.com.: J05/2013/2005
+Adresa: Str. Alexandru Donici nr. 18, Oradea,
+Bihor, 410562
+Telefon: 0726104530
+E-mail: contactZinvoice.ro
+Cont: RO47BTRL00501202725814XX
+Banca Transilvania
+Cota TVA: 19%
+Plata TVA Ia incasare
+FACTURA
+Seria: F Nr: 096 | Data: 13.06.2017
+Client:
+Client Demo
+CIF: RO12345678
+Reg.com.: J35/2001/2001
+Adresa: Adresa Bd. Republicii nr. 2, Timisoara,
+Timis, 300302

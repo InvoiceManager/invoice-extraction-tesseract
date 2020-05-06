@@ -216,10 +216,10 @@ def getContent(image_path, output_txt_path):
             file_antet.write(line)
     file_antet.close()
     with open("final/antet.txt") as f:
-        if 'E.ON' in f.read() or 'e-on' in f.read():
+        if 'E.ON' in f.read() or 'e-on' in f.read() or 'energie electric' in f.read():
             header_eon("antet.txt")
-        #           table_eon(image_path/output_txt_path)
-        #           bottom_eon(image_path/output_txt_path)
+            type = "eon"
         else:
             header_general("final/antet.txt")
-
+            type = "others"
+    return type

@@ -6,7 +6,7 @@ header_final = r'C:\Faculty\Master1\Invoice\invoice-extraction-tesseract\final\f
 
 if __name__ == '__main__':
     # extract header
-    recognitionTypeHeader.getContent(file, header_final)
+    print(recognitionTypeHeader.getContent(file, header_final))
 
     # tabel detect and recognize
     detectTableWithCv2.detect(file)
