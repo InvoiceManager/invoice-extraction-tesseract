@@ -1,0 +1,103 @@
+2invoice
+
+make your invoRes onine
+
+Demo 2invoice
+CIF: RO17991374
+
+Reg.com.: J05/2013/2005
+
+Adresa: Str. Alexandru Donici nr. 18, Oradea,
+Bihor, 410562
+
+Telefon: 0726104530
+
+E-mail: contactZinvoice.ro
+
+Cont: RO47BTRL00501202725814XX
+
+Banca Transilvania
+
+Cota TVA: 19%
+
+Plata TVA Ia incasare
+
+FACTURA
+
+Seria: F Nr: 096 | Data: 13.06.2017
+
+ 
+
+Client:
+
+Client Demo
+
+CIF: RO12345678
+
+Reg.com.: J35/2001/2001
+
+Adresa: Adresa Bd. Republicii nr. 2, Timisoara,
+Timis, 300302
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+Pret unitar]
+Ne. Valoare [Valoare TVA]
+2 Denumirea produselor sau a serviciilor um. | cant. |tara.TVA) | Yataare |Yrac
+z i zh 3 S5a) z
+ProausT
+1 |pescrierea prosusului sau ante detalii despre progus. [buc | 5 | 100 500 o
+Categoria A'- Po01
+eserierea serviciului prestat
+Servici conform cotract nr. 123 din data: 15.01.2017
+2 |bata /perioada prestarii serviciului: 01.05.2017 - e 'oo | e 1200 228,
+[37.05.2017
+Reprezentant: Demo 2invoice
+Delegat Popa. 1700.00 |__323.00
+exp. 123456789,
+BIG: Total
+Mijloc se transport:_ TM 94.486 2023.00 RON
+
+ 
+
+ 
+
+   
+
+ 
+
+ 
+
+ 
+
+Va rugam sa achitati factura pana la data: 27.06.2017

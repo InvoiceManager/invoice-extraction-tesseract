@@ -74,9 +74,10 @@ def text_recognize(text_to_recognize):
     text=pytesseract.image_to_string(image, lang="ron", config=custom_config)
 
     #export ocr result
-    workbook = xlsxwriter.Workbook('output.xlsx')
-    worksheet = workbook.add_worksheet()
-    worksheet.write('A1', text)
-    workbook.close()
+    #TODO save in xlx
+ #   workbook = xlsxwriter.Workbook('output.xlsx')
+  #  worksheet = workbook.add_worksheet()
+  #  worksheet.write('A1', text)
+  #  workbook.close()
 
     return text

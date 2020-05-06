@@ -59,7 +59,7 @@ def extractCells(file_name):
     img_final_bin = cv2.addWeighted(verticle_lines_img, alpha, horizontal_lines_img, beta, 0.0)
     img_final_bin = cv2.erode(~img_final_bin, kernel, iterations=2)
     (thresh, img_final_bin) = cv2.threshold(img_final_bin, 128, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
-    cv2.imwrite("result/img_final_bin.jpg", img_final_bin)
+    cv2.imwrite("TableProcessing/result/img_final_bin.jpg", img_final_bin)
 
     # Find contours for image, which will detect all the boxes
     contours, hierarchy = cv2.findContours(img_final_bin, cv2.RETR_TREE,
@@ -82,6 +82,7 @@ def extractCells(file_name):
                 myHeader.sort_list()
                 #TODO return header with body in one call
                 myHeader.print_props()
+                myHeader.save_to_file()
 
         if aux_header_x == -1:
             aux_header_x = x
@@ -89,9 +90,9 @@ def extractCells(file_name):
         idx += 1
         new_img = img[y - 2:y + h + 2, x - 2:x + w]
         # If the box height is greater then 20, widht is >80, then only save it as a box in "cropped/" folder.
-        cv2.imwrite('result/' + str(idx) + '.png', new_img)
+        cv2.imwrite('TableProcessing/result/' + str(idx) + '.png', new_img)
 
-        extracted_text = tesseract.text_recognize('result/' + str(idx) + '.png')
+        extracted_text = tesseract.text_recognize('TableProcessing/result/' + str(idx) + '.png')
         if flag_to_header == False:
             myHeader.add_proprieties(extracted_text)
         if flag_to_header:

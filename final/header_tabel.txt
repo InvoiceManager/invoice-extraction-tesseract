@@ -1,0 +1,6 @@
+Nr.
+crt.Donumirea produselor sau a serviciilorCant.Pret unitar
+(fara TVA)
+"RON-Valoare
+-RON-Valoare TVA
+“RON-
