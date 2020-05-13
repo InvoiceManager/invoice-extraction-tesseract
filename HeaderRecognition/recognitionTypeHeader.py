@@ -5,7 +5,81 @@ import re
 import openpyxl
 
 
-def getContent(image_path, output_txt_path):
+def getType(image_path):
+    ################PREPROCESARE##############
+    # opening - erosion followed by dilation
+    def opening(img):
+        kernel = np.ones((5, 5), np.uint8)
+        return cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
+
+    # canny edge detection
+    def canny(img):
+        return cv2.Canny(img, 100, 200)
+
+    # get grayscale image
+    def get_grayscale(img):
+        return cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    # noise removal
+    def remove_noise(img):
+        return cv2.medianBlur(img, 5)
+
+    # thresholding
+    def thresholding(img):
+        return cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
+
+    # dilation
+    def dilate(img):
+        kernel = np.ones((5, 5), np.uint8)
+        return cv2.dilate(img, kernel, iterations=1)
+
+    # erosion
+    def erode(img):
+        kernel = np.ones((5, 5), np.uint8)
+        return cv2.erode(img, kernel, iterations=1)
+
+    # skew correction
+    def deskew(img):
+        coords = np.column_stack(np.where(img > 0))
+        angle = cv2.minAreaRect(coords)[-1]
+        if angle < -45:
+            angle = -(90 + angle)
+        else:
+            angle = -angle
+            (h, w) = img.shape[:2]
+            center = (w // 2, h // 2)
+            M = cv2.getRotationMatrix2D(center, angle, 1.0)
+            rotated = cv2.warpAffine(img, M, (w, h), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
+            return rotated
+
+    # template matching
+    def match_template(img, template):
+        return cv2.matchTemplate(img, template, cv2.TM_CCOEFF_NORMED)
+
+
+    image = cv2.imread(image_path)
+    gray = get_grayscale(image)
+    thresh = thresholding(gray)
+    opening = opening(gray)
+    canny = canny(gray)
+
+    cv2.imshow("image", thresh)
+    cv2.waitKey(0)
+
+    # Adding custom options
+    custom_config = r'-l ron --oem 3 --psm 3'
+    text = pytesseract.image_to_string(image, config=custom_config)
+
+    if 'E.ON' in text or 'e-on' in text or 'energie electric' in text or 'energie electrica' in text or 'Energie electric' in text:
+        type = "eon"
+    elif "cubus" in text or "Cubus" in text:
+        type = "cubus"
+    else:
+        type = "others"
+    return type
+
+
+def getContent(image_path, output_txt_path,type):
     ################PREPROCESARE##############
     # opening - erosion followed by dilation
     def opening(img):
@@ -57,19 +131,155 @@ def getContent(image_path, output_txt_path):
         return cv2.matchTemplate(img, template, cv2.TM_CCOEFF_NORMED)
 
     ######## HEADER ######
-    def header_eon(header_txt):
-        print("eon")
+    def header_cubus(output_txt):
+        final_data = []
 
-    def header_general(header_txt):
+        proper_noun = '(([A-Z][A-Za-z]{1,15}[ -.])([A-Z][A-Za-z][1-5]{1,15}[ -.]*)+)[\n]'
+        address = '((Bulevardul|Bd.|Str.|Str|Strada)[: .,0-9a-zA-Z]+)'
+        cont = '((RO)[0-9A-Z]{22})'
+        banca = '^(Banca)[ 0-9A-Za-z]+'
+        nr_factura = '((nr.|nr|Nr|Nr.|Numarul|Numărul|numarul|numărul)[ :][0-9]+)'
+        data = '(([0-9]{2})[/.-]([0-9]{2})[/.-][0-9]{4})'
+        seria = '((Seria|seria|Serie|serie)[: -]+[A-Z0-9a-z])'
+
+        date_factura = ''
+        numar_factura = ''
+        seria_factura = ''
+        data_emiterii = ''
+        data_scadenta = ''
+        nume_furnizor = ''
+        address_furnizor = ''
+        cont_furnizor = ''
+        banca_furnizor = ''
+        nume_cumparator = ''
+        address_cumparator = ''
+        cont_cumparator = ''
+        banca_cumparator = ''
+        denumire_produs = ''
+        cantitate_produs = ''
+        valoare_produs = ''
+        total_factura = ''
+
+        file1 = open(output_txt, "r")
+        lines = file1.readlines()
+        i = 0
+        for line in lines:
+            i = i + 1
+            if i == 3:
+                numar_factura = line.split(' ')[-1].strip()
+            if i == 5:
+                data_emiterii = line.split(' ')[-1].strip()
+            if i == 7:
+                data_scadenta = line.split(' ')[-1].strip()
+            if i == 15:
+                nume_furnizor = line.strip()
+            if i == 20:
+                address_furnizor = line.split(":")[1].strip()
+            if i == 22:
+                address_furnizor += address_furnizor + ' ' + line.strip()
+            if i == 31:
+                nume_cumparator = line.strip()
+            if i == 36:
+                address_cumparator = line.split(":")[1].strip()
+            if i == 37:
+                address_cumparator += address_cumparator + ' ' + line.strip()
+            if i == 38:
+                banca_cumparator = line.split(':')[1].strip()
+            if i == 40:
+                cont_cumparator = line.split(':')[1].strip()
+
+        file1.close()
+        final_data.append(numar_factura.strip())
+        final_data.append(seria_factura.strip())
+        final_data.append(data_emiterii.strip())
+        final_data.append(data_scadenta.strip())
+        final_data.append(nume_furnizor.strip())
+        final_data.append(address_furnizor.strip())
+        final_data.append(cont_furnizor.strip())
+        final_data.append(banca_furnizor.strip())
+        final_data.append(nume_cumparator.strip())
+        final_data.append(address_cumparator.strip())
+        final_data.append(cont_cumparator.strip())
+        final_data.append(banca_cumparator.strip())
+
+        return final_data
+
+    def header_eon(output_txt):
+        final_data = []
+
+        proper_noun = '(([A-Z][A-Za-z]{1,15}[ -.])([A-Z][A-Za-z][1-5]{1,15}[ -.]*)+)[\n]'
+        address = '((Bulevardul|Bd.|Str.|Str|Strada)[: .,0-9a-zA-Z]+)'
+        cont = '((RO)[0-9A-Z]{22})'
+        banca = '^(Banca)[ 0-9A-Za-z]+'
+        nr_factura = '((nr.|nr|Nr|Nr.|Numarul|Numărul|numarul|numărul)[ :][0-9]+)'
+        data = '(([0-9]{2})[/.-]([0-9]{2})[/.-][0-9]{4})'
+        seria = '((Seria|seria|Serie|serie)[: -]+[A-Z0-9a-z])'
+
+        date_factura = ''
+        numar_factura = ''
+        seria_factura = ''
+        data_emiterii = ''
+        data_scadenta = ''
+        nume_furnizor = ''
+        address_furnizor = ''
+        cont_furnizor = ''
+        banca_furnizor = ''
+        nume_cumparator = ''
+        address_cumparator = ''
+        cont_cumparator = ''
+        banca_cumparator = ''
+        denumire_produs = ''
+        cantitate_produs = ''
+        valoare_produs = ''
+        total_factura = ''
+
+        file1 = open(output_txt, "r")
+        lines = file1.readlines()
+        i = 0
+        for line in lines:
+            i = i + 1
+            if i == 1:
+                nr_factura = line
+                # print("nr fact", nr_factura)
+            if i == 5:
+                nume_cumparator = line
+                # print("nume cump:", nume_cumparator)
+            if i == 6:
+                address_cumparator = line + " "
+                # print("add cump:", address_cumparator)
+            if i == 16:
+                nume_furnizor = line
+                # print("nume furn", nume_furnizor)
+            if i == 19:
+                address_furnizor = line
+                # print("add furn", address_furnizor)
+
+        file1.close()
+        final_data.append(numar_factura.strip())
+        final_data.append(seria_factura.strip())
+        final_data.append(data_emiterii.strip())
+        final_data.append(data_scadenta.strip())
+        final_data.append(nume_furnizor.strip())
+        final_data.append(address_furnizor.strip())
+        final_data.append(cont_furnizor.strip())
+        final_data.append(banca_furnizor.strip())
+        final_data.append(nume_cumparator.strip())
+        final_data.append(address_cumparator.strip())
+        final_data.append(cont_cumparator.strip())
+        final_data.append(banca_cumparator.strip())
+
+        return final_data
+
+    def header_general(output_txt):
         final_data = []
 
         antet = ''
-        file1 = open(header_txt, "r")
+        file1 = open(output_txt, "r")
         lines = file1.readlines()
         for line in lines:
             antet += line
 
-        proper_noun = '(([A-Z][A-Za-z]{1,15}[ -.])([A-Z][A-Za-z]{1,15}[ -.]*)+)[\n]'
+        proper_noun = '(([A-Z][A-Za-z]{1,15}[ -.])([A-Z1-9][A-Za-z]{1,15}[ -.]*)+)[\n]'
         address = '((Bulevardul|Bd.|Str.|Str|Strada)[: .,0-9a-zA-Z]+)'
         cont = '((RO)[0-9A-Z]{22})'
         banca = '^(Banca)[ 0-9A-Za-z]+'
@@ -104,7 +314,7 @@ def getContent(image_path, output_txt_path):
             if re.search('factura|Factura|FACTURA|FACTURĂ|Factură', line):
                 break
 
-        with open(header_txt) as myantet:
+        with open(output_txt) as myantet:
             f_lines = myantet.readlines()[(count_factura - 2):(count_factura + 2)]
             for line in f_lines:
                 date_factura += line
@@ -118,9 +328,7 @@ def getContent(image_path, output_txt_path):
             data_emiterii = date[0][0]
             if len(date) > 1:
                 data_scadenta = date[1][0]
-            # print(numar_factura)
-            # print(data_emiterii)
-            # print(data_scadenta)
+
         list_proper_noun = re.findall(proper_noun, antet)
         nume_furnizor = list_proper_noun[0][0]
 
@@ -162,10 +370,6 @@ def getContent(image_path, output_txt_path):
                         banca_cumparator = line
                         break
                 nume_cumparator = re.findall(proper_noun, date_cumparator)[0][0]
-                # print(nume_cumparator)
-                # print(address_cumparator)
-                # print(cont_cumparator)
-                # print(banca_cumparator)
 
         file1.close()
         final_data.append(numar_factura)
@@ -181,19 +385,6 @@ def getContent(image_path, output_txt_path):
         final_data.append(cont_cumparator)
         final_data.append(banca_cumparator)
 
-        # print("Data fact:", date_factura)
-        # print("Nr Fact:", numar_factura)
-        # print("Seria Fact:", seria_factura)
-        # print("Data emiterii:", data_emiterii)
-        # print("Data scad: ", data_scadenta)
-        # print("Nume Furn:", nume_furnizor)
-        # print("Addresa furnizor: ", address_furnizor)
-        # print("Cont furn: ", cont_furnizor)
-        # print("Banca Furn:", banca_furnizor)
-        # print("Nume Cump:", nume_cumparator)
-        # print("Adresa Cump: ", address_cumparator)
-        # print("Cont Cump:", cont_cumparator)
-        # print("Banca Cump:", banca_cumparator)
         return final_data
 
     ####################
@@ -215,34 +406,18 @@ def getContent(image_path, output_txt_path):
 
     text.replace('\n\n', '\n').replace('\n\n', '\n')
     file = open(output_txt_path, "w+", errors="ignore")
-    file.seek(0)
-    file.truncate()
     file.write(text)
 
     file.close()
 
-    file = open(output_txt_path, "r")
-    lines = file.readlines()
-    count = 0
-    for line in lines:
-        file_antet = open("final/antet.txt", "a")
-        if count > 5:
-            break
-        if len(line.strip()) == 0:
-            count = count + 1
-        else:
-            count = 0
-            file_antet.write(line)
-    file_antet.close()
-    with open("final/antet.txt") as f:
-        if 'E.ON' in f.read() or 'e-on' in f.read() or 'energie electric' in f.read():
-            final_data = header_eon("antet.txt")
-            type ="eon"
-        else:
-            final_data = header_general("final/antet.txt")
-            type = "others"
+    if type == "eon":
+        final_data = header_eon(output_txt_path)
+    elif type == "others":
+        final_data = header_general(output_txt_path)
+    elif type == "cubus":
+        final_data = header_cubus(output_txt_path)
 
-    return type, final_data
+    return final_data
 
 def writeExcel(final_data, excel_path):
     excelfile = openpyxl.load_workbook(excel_path)
