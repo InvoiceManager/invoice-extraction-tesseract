@@ -2,15 +2,19 @@ from HeaderRecognition import recognitionTypeHeader
 from TableProcessing import detectTableWithCv2
 
 file = r'C:\Faculty\Master1\Invoice\invoice-extraction-tesseract\src\fact.jpg'
+file_crop = r'C:\Faculty\Master1\Invoice\invoice-extraction-tesseract\src\fact_crop.jpg'
+
 header_final = r'C:\Faculty\Master1\Invoice\invoice-extraction-tesseract\final\fact.txt'
 
 if __name__ == '__main__':
     # extract header
     
-    type, header_data = recognitionTypeHeader.getContent(file, header_final)
-    recognitionTypeHeader.writeExcel(header_data,'Output-Facturi.xlsx')
-    
+    type = recognitionTypeHeader.getType(file)
     print(type)
+  
+    header_data = recognitionTypeHeader.getContent(file, header_final, type)
+    recognitionTypeHeader.writeExcel(header_data,'Output-Facturi.xlsx')
+ 
     print("Nr Fact:", header_data[0])
     print("Seria Fact:", header_data[1])
     print("Data emiterii:", header_data[2])
@@ -21,7 +25,7 @@ if __name__ == '__main__':
     print("Banca Furn:", header_data[7])
     print("Nume Cump:", header_data[8])
     print("Adresa Cump: ", header_data[9])
-    print("Cont Cump:", header_data[11])
+    print("Cont Cump:", header_data[10])
     print("Banca Cump:", header_data[11])
 
 
