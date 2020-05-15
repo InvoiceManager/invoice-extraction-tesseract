@@ -1,8 +1,8 @@
 from HeaderRecognition import recognitionTypeHeader
 from TableProcessing import detectTableWithCv2
+import cv2
 
-file = r'C:\Faculty\Master1\Invoice\invoice-extraction-tesseract\src\fact.jpg'
-file_crop = r'C:\Faculty\Master1\Invoice\invoice-extraction-tesseract\src\fact_crop.jpg'
+file = r'C:\Users\cosmin\PycharmProjects\invoice-extraction-tesseract\src\tabel.png'
 
 header_final = r'C:\Faculty\Master1\Invoice\invoice-extraction-tesseract\final\fact.txt'
 
@@ -11,8 +11,25 @@ if __name__ == '__main__':
     
     type = recognitionTypeHeader.getType(file)
     print(type)
-  
-    header_data = recognitionTypeHeader.getContent(file, header_final, type)
+    image1=cv2.imread(file)
+    if type == "eon":
+        crop1 = image1[0:805, 0:2000]
+        cv2.imwrite("crop1.jpg", crop1)
+        crop2 = image1[710:1010, 0:2000]
+        cv2.imwrite("crop2.jpg", crop2)
+    elif type == "cubus":
+        crop1 = image1[0:375, 0:2000]
+        cv2.imwrite("crop1.jpg", crop1)
+        crop2 = image1[370:1290, 0:2000]
+        cv2.imwrite("crop2.jpg", crop2)
+    else:
+        crop1 = image1[0:250, 0:2000]
+        cv2.imwrite("crop1.jpg", crop1)
+        crop2 = image1[245:2000, 0:2000]
+        cv2.imwrite("crop2.jpg", crop2)
+
+
+    header_data = recognitionTypeHeader.getContent(crop1, header_final, type)
     recognitionTypeHeader.writeExcel(header_data,'Output-Facturi.xlsx')
  
     print("Nr Fact:", header_data[0])
@@ -31,5 +48,5 @@ if __name__ == '__main__':
 
 
     # tabel detect and recognize
-    detectTableWithCv2.detect(file)
+    detectTableWithCv2.detect(crop2)
 
