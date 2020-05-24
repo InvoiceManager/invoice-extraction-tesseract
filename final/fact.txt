@@ -1,103 +1,40 @@
-2invoice
+FACTURE / FACTUR
 
-make your invoRes onine
+Facture N*: SRV-1450
+du (jj.mm.aaaa): 04/03/2020
+Date Limite de paiement (jj.mm.aaaa): 19/03/2020
 
-Demo 2invoice
-CIF: RO17991374
+Nom du vendeur / Vânztor:
 
-Reg.com.: J05/2013/2005
+S.C. Cubus Arts S.R.L.
 
-Adresa: Str. Alexandru Donici nr. 18, Oradea,
-Bihor, 410562
+Numero d' identification: ]32/508/2000
+Ne T.VA.: RO 13548146
 
-Telefon: 0726104530
+Adresse: Strada Morii 198
 
-E-mail: contactZinvoice.ro
+892200 Lugojoara, jud. Timi, România
+T6l&phone: 0368 409 233
 
-Cont: RO47BTRL00501202725814XX
+Email: office Ofactureaza.ro
 
-Banca Transilvania
+Site Internet: www.cubus.ro
 
-Cota TVA: 19%
+CUBU/ar+/
 
-Plata TVA Ia incasare
+Nom du payeur / Cumprtor:
 
-FACTURA
+S.C. DEMO IMPEX S.R.L.
 
-Seria: F Nr: 096 | Data: 13.06.2017
+Numero d! identification: ]32/500/2000
+Ne T.VA.: RO 14468355
 
- 
+Adresse: Bdul. Triumfului nr. 4 ap. 2
+589100 Sibiu, jud. Sibiu, România
+Banque: Banca Comerciala S:
+IBAN: RO056RZBRO000060003291177
+Tel&phone: +40 123 789456
 
-Client:
+Email: officeOfactureaza.ro
 
-Client Demo
-
-CIF: RO12345678
-
-Reg.com.: J35/2001/2001
-
-Adresa: Adresa Bd. Republicii nr. 2, Timisoara,
-Timis, 300302
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
-Pret unitar]
-Ne. Valoare [Valoare TVA]
-2 Denumirea produselor sau a serviciilor um. | cant. |tara.TVA) | Yataare |Yrac
-z i zh 3 S5a) z
-ProausT
-1 |pescrierea prosusului sau ante detalii despre progus. [buc | 5 | 100 500 o
-Categoria A'- Po01
-eserierea serviciului prestat
-Servici conform cotract nr. 123 din data: 15.01.2017
-2 |bata /perioada prestarii serviciului: 01.05.2017 - e 'oo | e 1200 228,
-[37.05.2017
-Reprezentant: Demo 2invoice
-Delegat Popa. 1700.00 |__323.00
-exp. 123456789,
-BIG: Total
-Mijloc se transport:_ TM 94.486 2023.00 RON
-
- 
-
- 
-
-   
-
- 
-
- 
-
- 
-
-Va rugam sa achitati factura pana la data: 27.06.2017
+Site Internet: www.factureaz:

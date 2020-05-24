@@ -6,6 +6,7 @@ class Header:
         self.path_to_header_txt = "final/header_tabel.txt"
 
     def add_proprieties(self, prop):
+        prop = prop.replace('\n', ' ').replace('\r', '')
         self.list_of_proprieties.append(prop)
 
     def sort_list(self):
@@ -16,5 +17,7 @@ class Header:
 
     def save_to_file(self):
         file = open(self.path_to_header_txt, "w")
-        file.writelines(self.list_of_proprieties)
+        for element in self.list_of_proprieties:
+            file.write(element)
+            file.write('\n')
         file.close()

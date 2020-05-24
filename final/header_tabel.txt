@@ -1,6 +1,9 @@
-Nr.
-crt.Donumirea produselor sau a serviciilorCant.Pret unitar
-(fara TVA)
-"RON-Valoare
--RON-Valoare TVA
-“RON-
+Ne
+Description (Denumirea produselor sau a serviciilor)
+Unite (u.n.)
+Le (câne.)
+Prix unite (excl. T.V.A.) -EUR-  - (RON) -
+Valeur (excl. T.V.A.) -EUR-  - (RON) -
+
+Montant T.V.A. -EUR- - (RON) -
+Montant T.T.C. -EUR- = (RON) -

@@ -1,9 +1,10 @@
 import cv2
 import numpy as np
 
+from TableProcessing import cells
 from TableProcessing import header
 from TextRecognition import tesseract
-from TableProcessing import cells
+
 
 def sort_contours(cnts, method="left-to-right"):
     # initialize the reverse flag and sort index
@@ -67,38 +68,41 @@ def extractCells(file_name):
     (contours, boundingBoxes) = sort_contours(contours, method="top-to-bottom")
 
     aux_header_x = -1
-    aux_line_x = -1
+    aux_line_x = 1
     lines = []
     flag_to_header = False
     idx = 0
     for c in contours:
         # Returns the location and width,height for every contour
         x, y, w, h = cv2.boundingRect(c)
-        if aux_header_x == x:
-            aux_line_x = x
-            flag_to_header = True
-            if flag_to_header:
-                aux_header_x = -2
-                myHeader.sort_list()
-                #TODO return header with body in one call
-                myHeader.print_props()
-                myHeader.save_to_file()
 
-        if aux_header_x == -1:
+        if flag_to_header and aux_header_x == -1:
+            aux_header_x = -2
+            myHeader.sort_list()
+            # TODO return header with body in one call
+            myHeader.print_props()
+            myHeader.save_to_file()
             aux_header_x = x
 
         idx += 1
         new_img = img[y - 2:y + h + 2, x - 2:x + w]
         # If the box height is greater then 20, widht is >80, then only save it as a box in "cropped/" folder.
         cv2.imwrite('TableProcessing/result/' + str(idx) + '.png', new_img)
-
-        extracted_text = tesseract.text_recognize('TableProcessing/result/' + str(idx) + '.png')
-        if flag_to_header == False:
-            myHeader.add_proprieties(extracted_text)
-        if flag_to_header:
-            if aux_line_x == x:
-                myCells.add_cell(idx, lines)
-                lines = []
-            lines.append(extracted_text)
+        if (idx > 2):
+            extracted_text = tesseract.text_recognize('TableProcessing/result/' + str(idx) + '.png')
+            if flag_to_header == False and x > 76:
+                myHeader.add_proprieties(extracted_text)
+            else:
+                myHeader.add_proprieties(extracted_text)
+                flag_to_header = True
+            if flag_to_header:
+                if x == 76:
+                    lines.reverse()
+                    print(lines)
+                    myCells.add_cell(aux_line_x, lines)
+                    aux_line_x = aux_line_x + 1
+                    lines = []
+                extracted_text = extracted_text.replace('\n', ' ').replace('\r', '')
+                lines.append(extracted_text)
 
     return myCells
