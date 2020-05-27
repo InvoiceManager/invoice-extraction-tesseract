@@ -163,29 +163,31 @@ def getContent(image_path, output_txt_path,type):
         file1 = open(output_txt, "r")
         lines = file1.readlines()
         i = 0
+        print("lines",lines)
         for line in lines:
+            print(i, line)
             i = i + 1
             if i == 3:
                 numar_factura = line.split(' ')[-1].strip()
-            if i == 5:
+            if i == 4:
                 data_emiterii = line.split(' ')[-1].strip()
-            if i == 7:
+            if i == 5:
                 data_scadenta = line.split(' ')[-1].strip()
             if i == 15:
                 nume_furnizor = line.strip()
-            if i == 20:
+            if i == 14:
                 address_furnizor = line.split(":")[1].strip()
-            if i == 22:
+            if i == 16:
                 address_furnizor += address_furnizor + ' ' + line.strip()
             if i == 31:
                 nume_cumparator = line.strip()
             if i == 36:
                 address_cumparator = line.split(":")[1].strip()
-            if i == 37:
+            if i == 33:
                 address_cumparator += address_cumparator + ' ' + line.strip()
-            if i == 38:
+            if i == 34:
                 banca_cumparator = line.split(':')[1].strip()
-            if i == 40:
+            if i == 35:
                 cont_cumparator = line.split(':')[1].strip()
 
         file1.close()
@@ -236,21 +238,27 @@ def getContent(image_path, output_txt_path,type):
         file1 = open(output_txt, "r")
         lines = file1.readlines()
         i = 0
+        print("lines", lines)
         for line in lines:
             i = i + 1
-            if i == 1:
-                nr_factura = line
+            print(i, line)
+            if i == 19:
+                numar_factura = line
                 # print("nr fact", nr_factura)
-            if i == 5:
+            if i == 20:
+                data_emiterii = line.split(' ')[-1].strip()
+            if i == 22:
+                data_scadenta = line.split(' ')[-1].strip()
+            if i == 32:
                 nume_cumparator = line
                 # print("nume cump:", nume_cumparator)
-            if i == 6:
+            if i == 33:
                 address_cumparator = line + " "
                 # print("add cump:", address_cumparator)
-            if i == 16:
+            if i == 5:
                 nume_furnizor = line
                 # print("nume furn", nume_furnizor)
-            if i == 19:
+            if i == 7:
                 address_furnizor = line
                 # print("add furn", address_furnizor)
 
@@ -310,6 +318,7 @@ def getContent(image_path, output_txt_path,type):
         # luam datele facturii
         count_factura = 0
         for line in lines:
+            print(line)
             count_factura += 1
             if re.search('factura|Factura|FACTURA|FACTURĂ|Factură', line):
                 break
@@ -396,13 +405,12 @@ def getContent(image_path, output_txt_path,type):
     opening = opening(gray)
     canny = canny(gray)
 
-    cv2.imshow("image", thresh)
+    cv2.imshow("header", thresh)
     cv2.waitKey(0)
 
     # Adding custom options
     custom_config = r'-l ron --oem 3 --psm 3'
     text = pytesseract.image_to_string(image, config=custom_config)
-    # print(text)
 
     text.replace('\n\n', '\n').replace('\n\n', '\n')
     file = open(output_txt_path, "w+", errors="ignore")
