@@ -1,9 +1,9 @@
-Ne
-Description (Denumirea produselor sau a serviciilor)
-Unite (u.n.)
-Le (câne.)
-Prix unite (excl. T.V.A.) -EUR-  - (RON) -
-Valeur (excl. T.V.A.) -EUR-  - (RON) -
 
-Montant T.V.A. -EUR- - (RON) -
-Montant T.T.C. -EUR- = (RON) -
+Descrizioni (Denumirea produselor sau a serviciilor)
+
+Quant. (Cant. )
+Prezzo/unit (escl. IVA) -EUR-  - (RON) -
+Valore (escl. IVA) -EUR-  - (RON) -
+IVA
+importo IVA -EUR- - (RON) -
+Totale -EUR- - (RON)-

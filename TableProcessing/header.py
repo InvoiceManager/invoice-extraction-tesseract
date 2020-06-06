@@ -16,7 +16,7 @@ class Header:
         print(self.list_of_proprieties)
 
     def save_to_file(self):
-        file = open(self.path_to_header_txt, "w")
+        file = open(self.path_to_header_txt, "w", encoding="utf-8")
         for element in self.list_of_proprieties:
             file.write(element)
             file.write('\n')

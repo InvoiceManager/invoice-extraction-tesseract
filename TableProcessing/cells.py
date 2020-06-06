@@ -14,5 +14,5 @@ class Cells:
         print(self.cells_dic)
 
     def save_to_file(self):
-        with open(self.path_to_bodyr_txt, 'w') as fp:
+        with open(self.path_to_bodyr_txt, 'w', encoding="utf-8") as fp:
             json.dump(self.cells_dic, fp)

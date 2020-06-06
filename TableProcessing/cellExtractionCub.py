@@ -37,12 +37,15 @@ def extractCells(file_name):
     # Thresholding the image
     (thresh, img_bin) = cv2.threshold(img, 128, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)  # Invert the image
     img_bin = 255 - img_bin
-
+    img = cv2.GaussianBlur(img, (3, 3), 0)
+    canny = cv2.Canny(img, 50, 150)
     # Defining a kernel length
     kernel_length = np.array(img).shape[1] // 80
-
+    cv2.imshow("dwa", img_bin)
+    cv2.waitKey(50)
     # A verticle kernel of (1 X kernel_length), which will detect all the verticle lines from the image.
-    verticle_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1, kernel_length))  # A horizontal kernel of (kernel_length X 1), which will help to detect all the horizontal line from the image.
+    verticle_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1,
+                                                                 kernel_length))  # A horizontal kernel of (kernel_length X 1), which will help to detect all the horizontal line from the image.
     hori_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (kernel_length, 1))  # A kernel of (3 X 3) ones.
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
 

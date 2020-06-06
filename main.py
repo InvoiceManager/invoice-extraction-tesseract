@@ -2,12 +2,11 @@ from HeaderRecognition import recognitionTypeHeader
 from TableProcessing import detectTableWithCv2
 import cv2
 
-file = r'C:\Users\cosmin\PycharmProjects\27maiinvoice\src\eon2.jpg'
-cr1 = r'C:\Users\cosmin\PycharmProjects\27maiinvoice\src\crop1.jpg'
-cr2 = r'C:\Users\cosmin\PycharmProjects\27maiinvoice\src\crop2.jpg'
+file = r'C:\Faculty\Master1\Invoice\invoice-extraction-tesseract\src\tabel.png'
+cr1 = r'C:\Faculty\Master1\Invoice\invoice-extraction-tesseract\src\crop1.jpg'
+cr2 = r'C:\Faculty\Master1\Invoice\invoice-extraction-tesseract\src\crop2.jpg'
 
-header_final = r'C:\Users\cosmin\PycharmProjects\27maiinvoice\final\fact.txt'
-
+header_final = r'C:\Faculty\Master1\Invoice\invoice-extraction-tesseract\final\fact.txt'
 if __name__ == '__main__':
     # extract header
 
