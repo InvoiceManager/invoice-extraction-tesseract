@@ -4,6 +4,7 @@ class Header:
         self.list_of_proprieties = []
         self.ordered_list = []
         self.path_to_header_txt = "final/header_tabel.txt"
+        self.path_to_bodyr_txt = "final/body_tabel.json"
 
     def add_proprieties(self, prop):
         prop = prop.replace('\n', ' ').replace('\r', '')
@@ -14,6 +15,7 @@ class Header:
 
     def print_props(self):
         print(self.list_of_proprieties)
+
 
     def save_to_file(self):
         file = open(self.path_to_header_txt, "w", encoding="utf-8")

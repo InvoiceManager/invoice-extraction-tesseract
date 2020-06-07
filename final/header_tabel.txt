@@ -1,9 +1,7 @@
+Preţ unitar fără TVA
 
-Descrizioni (Denumirea produselor sau a serviciilor)
 
-Quant. (Cant. )
-Prezzo/unit (escl. IVA) -EUR-  - (RON) -
-Valore (escl. IVA) -EUR-  - (RON) -
-IVA
-importo IVA -EUR- - (RON) -
-Totale -EUR- - (RON)-
+Valoarea TVA
+
+
+
