@@ -8,3 +8,4 @@ def detect(type):
         myCells = get_conturs(file)
 
         myCells.save_to_file()
+        myCells.save_to_excel()
