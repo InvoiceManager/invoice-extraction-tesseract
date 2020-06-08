@@ -3,7 +3,6 @@ from TableProcessing import detectTableWithCv2
 import cv2
 
 file = r'C:\Faculty\Master1\Invoice\invoice-extraction-tesseract\src\tabel.png'
-cr1 = r'C:\Faculty\Master1\Invoice\invoice-extraction-tesseract\src\crop1.jpg'
 cr2 = r'C:\Faculty\Master1\Invoice\invoice-extraction-tesseract\src\crop2.jpg'
 
 header_final = r'C:\Faculty\Master1\Invoice\invoice-extraction-tesseract\final\fact.txt'
@@ -14,23 +13,17 @@ if __name__ == '__main__':
     print(type)
     image1 = cv2.imread(file)
     if type == "eon":
-        crop1 = image1[0:1065, 0:3000]
-        cv2.imwrite(cr1, crop1)
         crop2 = image1[1060:2010, 0:3000]
         cv2.imwrite(cr2, crop2)
     elif type == "cubus":
-        crop1 = image1[0:375, 0:2000]
-        cv2.imwrite(cr1, crop1)
         crop2 = image1[370:1290, 0:2000]
         cv2.imwrite(cr2, crop2)
         detectTableWithCv2.detect(type)
     else:
-        crop1 = image1[0:250, 0:2000]
-        cv2.imwrite(cr1, crop1)
         crop2 = image1[245:2000, 0:2000]
         cv2.imwrite(cr2, crop2)
 
-    header_data = recognitionTypeHeader.getContent(cr1, header_final, type)
+    header_data = recognitionTypeHeader.getContent(file, header_final, type)
     #recognitionTypeHeader.writeExcel(header_data, 'Output-Facturi.xlsx')
 
     print("Nr Fact:", header_data[0])
@@ -45,4 +38,4 @@ if __name__ == '__main__':
     print("Adresa Cump: ", header_data[9])
     print("Cont Cump:", header_data[10])
     print("Banca Cump:", header_data[11])
-
+    print("Total factura:", header_data[12])
