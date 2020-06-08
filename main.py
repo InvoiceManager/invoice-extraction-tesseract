@@ -4,6 +4,8 @@ import cv2
 
 file = r'C:\Faculty\Master1\Invoice\invoice-extraction-tesseract\src\tabel.png'
 cr2 = r'C:\Faculty\Master1\Invoice\invoice-extraction-tesseract\src\crop2.jpg'
+jsonFile = r'C:\Faculty\Master1\Invoice\invoice-extraction-tesseract\final\body_tabel.json'
+
 
 header_final = r'C:\Faculty\Master1\Invoice\invoice-extraction-tesseract\final\fact.txt'
 if __name__ == '__main__':
@@ -24,7 +26,11 @@ if __name__ == '__main__':
         cv2.imwrite(cr2, crop2)
 
     header_data = recognitionTypeHeader.getContent(file, header_final, type)
-    #recognitionTypeHeader.writeExcel(header_data, 'Output-Facturi.xlsx')
+    
+    #Aici trebuie folosite datele intoarse de Cosmin din interfata (in loc de header_data)
+    sheet_name = header_data[4].replace(" ", "_") + "-" + header_data[0].replace(" ", "_")
+    recognitionTypeHeader.writeExcelHeader(header_data, 'Output_Invoices.xlsx', sheet_name)
+    recognitionTypeHeader.writeExcelTable(jsonFile, 'Output_Invoices.xlsx', sheet_name)
 
     print("Nr Fact:", header_data[0])
     print("Seria Fact:", header_data[1])
