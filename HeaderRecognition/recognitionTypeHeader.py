@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 import re
 import openpyxl
+import json
 
 
 def getType(image_path):
@@ -474,46 +475,73 @@ def getContent(image_path, output_txt_path,type):
     # file.close()
     return final_data
 
-def writeExcel(final_data, excel_path):
+def writeExcelTable(json_data, excel_path, sheet_name):
     excelfile = openpyxl.load_workbook(excel_path)
     excelfile.get_sheet_names()
-    sheet1 = excelfile.get_sheet_by_name("Facturi")
+    sheet1 = excelfile.get_sheet_by_name(sheet_name)
+    f = open(json_data, "r")
+    data = json.loads(f.read())
+    for key in data:
+        new_row = sheet1.max_row + 1
+        list_data = data[key]
+        col = 1
+        for i in list_data:
+            print(i)
+            cell = sheet1.cell(row=new_row, column=col)
+            cell.value = i
+            col = col + 1
+    excelfile.save(excel_path)
 
+
+def writeExcelHeader(final_data, excel_path, sheet_name):
+    excelfile = openpyxl.load_workbook(excel_path)
+    excelfile.get_sheet_names()
+    sheet1 = excelfile.get_sheet_by_name("Header-Invoices")
     new_row = sheet1.max_row + 1
+
+    id_invoice = final_data[4].replace(" ", "_") + "-" + final_data[0].replace(" ", "_")
     cell1 = sheet1.cell(row=new_row, column=1)
+    cell1.value = sheet_name
+
+    cell1 = sheet1.cell(row=new_row, column=2)
     cell1.value = final_data[0]
 
-    cell2 = sheet1.cell(row=new_row, column=2)
+    cell2 = sheet1.cell(row=new_row, column=3)
     cell2.value = final_data[1]
 
-    cell3 = sheet1.cell(row=new_row, column=3)
+    cell3 = sheet1.cell(row=new_row, column=4)
     cell3.value = final_data[2]
 
-    cell4 = sheet1.cell(row=new_row, column=4)
+    cell4 = sheet1.cell(row=new_row, column=5)
     cell4.value = final_data[3]
 
-    cell5 = sheet1.cell(row=new_row, column=5)
+    cell5 = sheet1.cell(row=new_row, column=6)
     cell5.value = final_data[4]
 
-    cell6 = sheet1.cell(row=new_row, column=6)
+    cell6 = sheet1.cell(row=new_row, column=7)
     cell6.value = final_data[5]
 
-    cell7 = sheet1.cell(row=new_row, column=7)
+    cell7 = sheet1.cell(row=new_row, column=8)
     cell7.value = final_data[6]
 
-    cell8 = sheet1.cell(row=new_row, column=8)
+    cell8 = sheet1.cell(row=new_row, column=9)
     cell8.value = final_data[7]
 
-    cell9 = sheet1.cell(row=new_row, column=9)
+    cell9 = sheet1.cell(row=new_row, column=10)
     cell9.value = final_data[8]
 
-    cell10 = sheet1.cell(row=new_row, column=10)
+    cell10 = sheet1.cell(row=new_row, column=11)
     cell10.value = final_data[9]
 
-    cell11 = sheet1.cell(row=new_row, column=11)
+    cell11 = sheet1.cell(row=new_row, column=12)
     cell11.value = final_data[10]
 
-    cell12 = sheet1.cell(row=new_row, column=12)
+    cell12 = sheet1.cell(row=new_row, column=13)
     cell12.value = final_data[11]
 
+    cell12 = sheet1.cell(row=new_row, column=14)
+    cell12.value = final_data[12]
+
+    excelfile.create_sheet(id_invoice)
     excelfile.save(excel_path)
+
