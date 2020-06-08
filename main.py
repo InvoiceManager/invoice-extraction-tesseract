@@ -19,11 +19,7 @@ if __name__ == '__main__':
         crop2 = image1[1060:2010, 0:3000]
         cv2.imwrite(cr2, crop2)
     elif type == "cubus":
-        crop1 = image1[0:375, 0:2000]
-        cv2.imwrite(cr1, crop1)
-        crop2 = image1[370:1290, 0:2000]
-        cv2.imwrite(cr2, crop2)
-        detectTableWithCv2.detect(type)
+       detectTableWithCv2.detect(cr2)
     else:
         crop1 = image1[0:250, 0:2000]
         cv2.imwrite(cr1, crop1)

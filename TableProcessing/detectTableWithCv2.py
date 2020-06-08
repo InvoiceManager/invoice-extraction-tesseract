@@ -1,11 +1,9 @@
 from TableProcessing.parsing import get_conturs
 
 
-def detect(type):
-    file = r'C:\Faculty\Master1\Invoice\invoice-extraction-tesseract\src\capture3.png'
+def detect(path):
 
-    if type == "cubus":
-        myCells = get_conturs(file)
+    myCells = get_conturs(path)
 
-        myCells.save_to_file()
-        myCells.save_to_excel()
+    myCells.save_to_file()
+    myCells.save_to_excel()
