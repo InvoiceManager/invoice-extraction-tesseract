@@ -10,7 +10,7 @@ import cv2
 refPt = []
 cropping = False
 
-cr1 = r'C:\Users\cosmin\PycharmProjects\27maiinvoice\src\crop1.jpg'
+cr1 = r'C:\Users\cosmin\PycharmProjects\9iuninvoice\src\crop2.jpg'
 
 def click_and_crop(event, x, y, flags, param):
 	# grab references to the global variables
