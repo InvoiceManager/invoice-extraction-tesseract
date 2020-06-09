@@ -4,29 +4,19 @@ import cv2
 
 # file = r'C:\Users\Andrada\OneDrive\Desktop\Master\Sem2\Statistica NLP\invoice-extraction-tesseract\src\tabel.png'
 
-jsonFile = r'C:\Faculty\Master1\Invoice\invoice-extraction-tesseract\final\body_tabel.json'
+jsonFile = r'C:\Users\cosmin\PycharmProjects\9iuninvoice\final\body_tabel.json'
 
-file = r'C:\Faculty\Master1\Invoice\invoice-extraction-tesseract\src\tabel.png'
-cr1 = r'C:\Faculty\Master1\Invoice\invoice-extraction-tesseract\src\crop1.jpg'
-cr2 = r'C:\Faculty\Master1\Invoice\invoice-extraction-tesseract\src\crop2.jpg'
+file = r'C:\Users\cosmin\PycharmProjects\9iuninvoice\src\tabel.png'
+cr2 = r'C:\Users\cosmin\PycharmProjects\9iuninvoice\src\crop2.jpg'
 
-header_final = r'C:\Faculty\Master1\Invoice\invoice-extraction-tesseract\final\fact.txt'
+header_final = r'C:\Users\cosmin\PycharmProjects\9iuninvoice\final\fact.txt'
 if __name__ == '__main__':
 
     # extract header and type
 
     type = recognitionTypeHeader.getType(file)
-    image1 = cv2.imread(file)
-    if type == "eon":
-        crop2 = image1[1060:2010, 0:3000]
-        cv2.imwrite(cr2, crop2)
-    elif type == "cubus":
-        crop2 = image1[370:1290, 0:2000]
-        cv2.imwrite(cr2, crop2)
-        detectTableWithCv2.detect(cr2)
-    else:
-        crop2 = image1[245:2000, 0:2000]
-        cv2.imwrite(cr2, crop2)
+
+    detectTableWithCv2.detect(cr2)
 
     header_data = recognitionTypeHeader.getContent(file, header_final, type)
 

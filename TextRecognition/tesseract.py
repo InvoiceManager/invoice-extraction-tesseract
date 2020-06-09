@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 import xlsxwriter
 
-pytesseract.pytesseract.tesseract_cmd = r'C:\Faculty\Master1\Invoice\Tesseract\tesseract.exe'
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 
 # get grayscale image
@@ -65,9 +65,6 @@ def text_recognize(text_to_recognize):
     thresh = thresholding(gray)
     op = opening(gray)
     ca = canny(gray)
-
- #   cv2.imshow("image", thresh)
-   # cv2.waitKey(0)
 
     # Adding custom options
     custom_config = r'--oem 3 --psm 3'

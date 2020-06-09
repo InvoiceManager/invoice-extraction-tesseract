@@ -64,9 +64,6 @@ def getType(image_path):
     opening = opening(gray)
     canny = canny(gray)
 
-    cv2.imshow("image", thresh)
-    cv2.waitKey(0)
-
     # Adding custom options
     custom_config = r'-l ron --oem 3 --psm 3'
     text = pytesseract.image_to_string(image, config=custom_config)
@@ -452,9 +449,6 @@ def getContent(image_path, output_txt_path,type):
     thresh = thresholding(gray)
     opening = opening(gray)
     canny = canny(gray)
-
-    cv2.imshow("header", thresh)
-    cv2.waitKey(0)
 
     # Adding custom options
     custom_config = r'-l ron --oem 3 --psm 3'
